@@ -942,11 +942,11 @@ function renderSpeed(val) {
 
   // Speed labels
   speedCtx.save();
-  speedCtx.font = '600 11px Orbitron, monospace';
+  speedCtx.font = '600 10px Orbitron, monospace';
   speedCtx.fillStyle = 'rgba(200,208,224,0.4)';
   speedCtx.textAlign = 'center';
-  [0, 40, 80, 120, 160, 200, 240, 280].forEach((s, i) => {
-    const frac = s / 280;
+  [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220].forEach((s, i) => {
+    const frac = s / 220;
     const a = START_ANGLE + frac * (END_ANGLE - START_ANGLE);
     const lbl_r = r - 13 - 22;
     speedCtx.fillText(s, cx + Math.cos(a) * lbl_r, cy + Math.sin(a) * lbl_r + 4);
