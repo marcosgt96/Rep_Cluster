@@ -9,7 +9,7 @@ Sistema completo de painel de instrumento digital otimizado para Raspberry Pi, s
 - ✅ **Interface Gráfica**: Painel digital com tema automotivo escuro
 - ✅ **Cenários de Simulação**: 6 cenários diferentes de condução
 - ✅ **Controles Interativos**: Botões para ligar, acelerar, desacelerar
-- ✅ **Testes Unitários**: 14 testes validando toda a lógica
+- ✅ **Testes Unitários**: 18 testes validando toda a lógica
 - ✅ **Otimização Raspberry Pi**: Compatível com telas 7-10"
 - ✅ **Exemplos de Hardware**: Integração com OBD2, GPIO, CAN Bus
 
@@ -67,7 +67,7 @@ Cluster_Automotivo/
 ├── requirements.txt                # Dependências
 └── tests/
     ├── __init__.py
-    └── test_vehicle_sensors.py     # 14 testes unitários
+    └── test_vehicle_sensors.py     # 18 testes unitários
 ```
 
 ## 🎮 Cenários de Simulação
@@ -132,7 +132,7 @@ pytest tests/test_vehicle_sensors.py --cov=vehicle_sensors
 pytest tests/test_vehicle_sensors.py::TestVehicleSensorSimulator::test_accelerate -v
 ```
 
-**Cobertura**: 14 testes unitários validando:
+**Cobertura**: 18 testes unitários validando:
 - Inicialização de sensores
 - Liga/desliga motor
 - Aceleração/desaceleração
