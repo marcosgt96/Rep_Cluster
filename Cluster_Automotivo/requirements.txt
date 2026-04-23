@@ -1,6 +1,8 @@
 # Dependências do Projeto Cluster Automotivo
 # Painel de Instrumento Digital para Raspberry Pi
 
+Flask>=2.0.0
+Flask-SocketIO>=5.0.0
 pytest>=7.0.0
 pytest-cov>=4.0.0
 

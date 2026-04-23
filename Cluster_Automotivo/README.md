@@ -6,9 +6,10 @@ Sistema completo de painel de instrumento digital otimizado para Raspberry Pi, s
 ## 📋 Funcionalidades
 
 - ✅ **Simulador de Sensores**: 6 sensores automotivos simulados realisticamente
-- ✅ **Interface Gráfica**: Painel digital com tema automotivo escuro
+- ✅ **Interface Web**: Painel digital moderno servido por Flask e Socket.IO
+- ✅ **HTML standalone**: `index.html` funciona como demo offline
 - ✅ **Cenários de Simulação**: 6 cenários diferentes de condução
-- ✅ **Controles Interativos**: Botões para ligar, acelerar, desacelerar
+- ✅ **Controles Interativos**: Botões e atualizações em tempo real
 - ✅ **Testes Unitários**: 18 testes validando toda a lógica
 - ✅ **Otimização Raspberry Pi**: Compatível com telas 7-10"
 - ✅ **Exemplos de Hardware**: Integração com OBD2, GPIO, CAN Bus
@@ -42,8 +43,13 @@ python cluster_quick_test.py
 # Demonstração completa (10 minutos)
 python cluster_demo.py
 
-# Interface gráfica completa
+# Interface web completa
 python cluster_gui.py
+
+# Abrir demo HTML standalone
+start index.html  # Windows
+xdg-open index.html  # Linux
+open index.html  # macOS
 
 # Menu interativo
 python cluster_setup.py
@@ -52,12 +58,19 @@ python cluster_setup.py
 pytest tests/test_vehicle_sensors.py -v
 ```
 
+### Acesso à interface web
+
+- Abra `http://localhost:5000` no navegador após executar `python cluster_gui.py`
+- A página usa Socket.IO para dados em tempo real
+- `index.html` também roda offline com simulação de dados
+
 ## 📁 Estrutura do Projeto
 
 ```
 Cluster_Automotivo/
 ├── vehicle_sensors.py              # Módulo principal de sensores
-├── cluster_gui.py                  # Interface gráfica Tkinter
+├── cluster_gui.py                  # Servidor web Flask + Socket.IO
+├── index.html                      # Interface web standalone / demo
 ├── cluster_demo.py                 # Cenários de simulação
 ├── cluster_quick_test.py           # Teste visual rápido
 ├── cluster_setup.py                # Menu interativo
@@ -101,7 +114,14 @@ Cluster_Automotivo/
 - Temperatura alta (> 110°C)
 - Pressão de óleo baixa (< 1.0 bar)
 
-## 🖥️ Interface Gráfica
+## 🖥️ Interface Web
+
+O sistema agora oferece uma interface web moderna:
+
+- `cluster_gui.py` serve a GUI web via Flask e Socket.IO
+- `index.html` pode ser aberto diretamente no navegador como demo
+- Atualizações em tempo real mostram RPM, velocidade, combustível, temperaturas, bateria, marcha, odômetro e alertas
+- Interface compatível com demo offline quando não há servidor Python conectado
 
 ### Layout
 - **Topo**: Velocidade e RPM (grandes)
@@ -111,13 +131,12 @@ Cluster_Automotivo/
 ### Controles
 - ▶ **Ligar**: Inicia o motor
 - ⏹ **Desligar**: Para o motor
-- ⬆ **Acelerar**: Aumenta velocidade/RPM
-- ⬇ **Desacelerar**: Diminui velocidade/RPM
+- Exibe marcha, odômetro, trip A/B, CAN BUS e status em tempo real
 
 ### Tema
-- Fundo preto (#1a1a1a)
-- Texto verde (#00ff00)
-- Estilo automotivo profissional
+- Fundo escuro com visual neon
+- Elementos em laranja, verde e azul para leitura rápida
+- Layout responsivo para tela cheia
 
 ## 🧪 Testes
 
@@ -144,14 +163,17 @@ pytest tests/test_vehicle_sensors.py::TestVehicleSensorSimulator::test_accelerat
 
 ### Desenvolvimento
 - **Python**: 3.7+
-- **Tkinter**: Incluído no Python
-- **pytest**: Para testes
+- **Flask**: servidor web
+- **Flask-SocketIO**: atualização em tempo real
+- **pytest**: para testes
 
 ### Produção (Raspberry Pi)
 - **Raspberry Pi**: 3B+ ou superior
 - **SO**: Raspbian/Raspberry Pi OS
 - **Tela**: HDMI ou touchscreen 7-10"
 - **Memória**: 1GB+ RAM
+
+> Observação: `python3-tk` é opcional se você utilizar apenas a interface web. Instale-o apenas para scripts que dependem de Tkinter.
 
 ## 🔌 Integração com Hardware Real
 
@@ -206,10 +228,9 @@ class VehicleSensorSimulator:
     def accelerate(self, delta)
     def get_current_data(self) -> VehicleData
 
-class ClusterDisplay(tk.Tk):
-    # Interface gráfica do painel
-    def _create_widgets(self)
-    def _update_display(self)
+class ClusterWebApp:
+    # Servidor Flask que entrega a interface web
+    def run(self)
 ```
 
 ## 🎨 Personalização
@@ -223,14 +244,15 @@ self.configure(bg='#1a1a1a')  # Fundo
 
 ### Alterar Intervalo de Atualização
 ```python
-# Em ClusterDisplay.__init__
-self.update_interval = 100  # ms
+# Em cluster_gui.py
+# Ajuste o loop de atualização ou a taxa de envio de dados
+# Exemplo: sleep(0.1) para atualizações a cada 100 ms
 ```
 
 ### Adicionar Novos Sensores
 1. Adicionar em `VehicleData`
 2. Implementar em `VehicleSensorSimulator`
-3. Criar widget em `ClusterDisplay`
+3. Expor novos dados em `cluster_gui.py`
 4. Adicionar testes
 
 ## 🚨 Sistema de Alertas
@@ -265,6 +287,8 @@ def _check_alerts(self, data):
 ## 📋 Dependências
 
 ```txt
+Flask>=2.0.0
+Flask-SocketIO>=5.0.0
 pytest>=7.0.0
 pytest-cov>=4.0.0
 
@@ -281,7 +305,7 @@ pytest-cov>=4.0.0
 ```bash
 sudo apt update
 sudo apt upgrade -y
-sudo apt install -y python3 python3-pip python3-tk
+sudo apt install -y python3 python3-pip
 ```
 
 ### Passo 2: Instalar Projeto
@@ -297,7 +321,7 @@ pip install -r requirements.txt
 # Teste
 python cluster_quick_test.py
 
-# Produção (fullscreen)
+# Produção (interface web)
 python cluster_gui.py
 ```
 
