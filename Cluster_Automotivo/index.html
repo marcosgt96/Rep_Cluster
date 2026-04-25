@@ -105,9 +105,9 @@
 
   .panel-gear {
     position: absolute;
-    right: 18px;
+    right: 119PX;
     bottom: 18px;
-    text-align: right;
+    text-align: center;
   }
 
   .panel-gear .gear-display {
@@ -184,7 +184,7 @@
   }
 
   .panel-title {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--dim);
@@ -306,7 +306,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 0px;
   }
 
   .bar-header {
@@ -316,7 +316,7 @@
   }
 
   .bar-name {
-    font-size: 0.58rem;
+    font-size: 0.7rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--dim);
@@ -330,14 +330,14 @@
   }
 
   .bar-unit {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     color: var(--dim);
     margin-left: 2px;
   }
 
   .bar-track {
     width: 100%;
-    height: 6px;
+    height: 7px;
     background: rgba(255,255,255,0.06);
     border-radius: 3px;
     overflow: hidden;
@@ -366,8 +366,8 @@
   }
 
   .bar-tick {
-    font-size: 0.42rem;
-    color: #2a3040;
+    font-size: 0.80rem;
+    color: #414550;
   }
 
   /* ── RPM PANEL ──────────────────────────────────────── */
@@ -590,7 +590,7 @@
 
   <!-- ─── LEFT PANEL: RPM ──────────────────────────────── -->
   <div class="panel" style="grid-column:1; grid-row:2; animation-delay:0.3s">
-    <span class="panel-title">TACHOMETER</span>
+    <span class="panel-title">TACÔMETRO</span>
     <canvas id="rpmGauge" width="330" height="330"></canvas>
     <div class="rpm-leds" id="rpm-leds">
       <!-- JS generated -->
@@ -607,8 +607,8 @@
 
   <!-- ─── CENTER PANEL: SPEEDOMETER ───────────────────── -->
   <div class="panel panel-center" style="grid-row:2; animation-delay:0.2s">
-    <span class="panel-title">VELOCIDADE</span>
-    <canvas id="speedGauge" width="390" height="390"></canvas>
+    <span class="panel-title">VELOCÍMETRO</span>
+    <canvas id="speedGauge" width="400" height="400"></canvas>
     <div style="position:absolute; bottom: 15%; display:flex; flex-direction:column; align-items:center;">
       <div class="speed-value" id="speed-val">0</div>
       <div class="speed-unit">KM/H</div>
@@ -663,9 +663,7 @@
       <div class="bar-ticks">
         <span class="bar-tick">40</span>
         <span class="bar-tick">80</span>
-        <span class="bar-tick">110</span>
-        <span class="bar-tick">140</span>
-        <span class="bar-tick">170</span>
+        <span class="bar-tick">125</span>
       </div>
     </div>
 
@@ -675,17 +673,15 @@
     <div class="bar-gauge" style="width:90%;">
       <div class="bar-header">
         <span class="bar-name">Pressão Oleo Motor</span>
-        <span><span class="bar-reading" id="transTemp-val">78</span><span class="bar-unit">C</span></span>
+        <span><span class="bar-reading" id="oilpressure-val">2.8</span><span class="bar-unit">bar</span></span>
       </div>
       <div class="bar-track">
-        <div class="bar-fill" id="transTemp-bar" style="width:45%; background: linear-gradient(90deg, var(--blue), #3ab5ff);"></div>
+        <div class="bar-fill" id="oilpressure-bar" style="width:45%; background: linear-gradient(90deg, var(--blue), #3ab5ff);"></div>
       </div>
       <div class="bar-ticks">
-        <span class="bar-tick">30</span>
-        <span class="bar-tick">60</span>
-        <span class="bar-tick">90</span>
-        <span class="bar-tick">120</span>
-        <span class="bar-tick">150</span>
+        <span class="bar-tick">0</span>
+        <span class="bar-tick">2.7</span>
+        <span class="bar-tick">5.4</span>
       </div>
     </div>
 
@@ -696,17 +692,15 @@
       <div class="bar-gauge" style="flex:1;">
         <div class="bar-header">
           <span class="bar-name">Consumo Médio</span>
-          <span><span class="bar-reading" id="boost-val">0.8</span><span class="bar-unit">km/l</span></span>
+          <span><span class="bar-reading" id="consumption-val">8.5</span><span class="bar-unit">km/l</span></span>
         </div>
         <div class="bar-track">
-          <div class="bar-fill" id="boost-bar" style="width:53%; background: linear-gradient(90deg, var(--accent2), var(--warn));"></div>
+          <div class="bar-fill" id="consumption-bar" style="width:53%; background: linear-gradient(90deg, var(--accent2), var(--warn));"></div>
         </div>
         <div class="bar-ticks">
           <span class="bar-tick">0</span>
-          <span class="bar-tick">5</span>
-          <span class="bar-tick">10</span>
+          <span class="bar-tick">7.5</span>
           <span class="bar-tick">15</span>
-          <span class="bar-tick">20</span>
         </div>
       </div>
     </div>
@@ -714,15 +708,15 @@
     <div class="accent-line"></div>
 
     <!-- Battery Voltage -->
-    <div style="display:flex; align-items:center; gap:16px; width:90%;">
+    <div style="display:flex; align-items:center; gap:80px; width:90%;">
       <div style="display:flex; flex-direction:column; align-items:flex-start; flex:1;">
-        <span class="bar-name">Tensao Bateria</span>
+        <span class="bar-name">Bateria</span>
         <div style="display:flex; align-items:baseline; gap:4px; margin-top:3px;">
           <div class="volt-value volt-good" id="volt-val">14.2</div>
           <span style="font-size:0.6rem; color:var(--dim);">V</span>
         </div>
       </div>
-      <canvas id="voltMini" width="70" height="70"></canvas>
+      <canvas id="voltMini" width="80" height="80"></canvas>
     </div>
 
   </div>
@@ -1048,20 +1042,20 @@ function updateDisplay(data) {
   document.getElementById('fuel-val').textContent = Math.round(data.fuel);
   document.getElementById('fuel-bar').style.width = data.fuel + '%';
 
-  // Oil temp
+  // coolant temp (Water Temperature)
   document.getElementById('oiltemp-val').textContent = data.coolant;
-  const oilPerc = ((data.coolant - 40) / (170 - 40)) * 100;
+  const oilPerc = ((data.coolant - 40) / (125 - 40)) * 100;
   document.getElementById('oiltemp-bar').style.width = Math.max(0, Math.min(100, oilPerc)) + '%';
 
-  // Trans temp
-  document.getElementById('transTemp-val').textContent = Math.round(data.trans_temp);
-  const transPerc = ((data.trans_temp - 30) / (150 - 30)) * 100;
-  document.getElementById('transTemp-bar').style.width = Math.max(0, Math.min(100, transPerc)) + '%';
+  // Oil pressure
+  document.getElementById('oilpressure-val').textContent = (data.oil_pressure || 2.8).toFixed(1);
+  const oilPressPerc = ((data.oil_pressure || 2.8) / 5.4) * 100;
+  document.getElementById('oilpressure-bar').style.width = Math.max(0, Math.min(100, oilPressPerc)) + '%';
 
-  // Boost
-  document.getElementById('boost-val').textContent = data.boost.toFixed(1);
-  const boostPerc = ((data.boost + 1) / (1.5 + 1)) * 100;
-  document.getElementById('boost-bar').style.width = Math.max(0, Math.min(100, boostPerc)) + '%';
+  // Fuel consumption
+  document.getElementById('consumption-val').textContent = (data.fuel_consumption || 8.5).toFixed(1);
+  const consumptionPerc = ((data.fuel_consumption || 8.5) / 15) * 100;
+  document.getElementById('consumption-bar').style.width = Math.max(0, Math.min(100, consumptionPerc)) + '%';
 
   // Voltage
   document.getElementById('volt-val').textContent = data.battery.toFixed(1);
@@ -1124,14 +1118,13 @@ function startSimulation() {
       speed: Math.random() * 240,
       fuel: Math.random() * 100,
       coolant: 80 + Math.random() * 40,
-      oil_temp: 80 + Math.random() * 40,
-      trans_temp: 60 + Math.random() * 40,
+      oil_pressure: Math.random() * 5.4,
+      fuel_consumption: 5 + Math.random() * 10,
       battery: 12 + Math.random() * 4,
       gear: Math.floor(Math.random() * 7),
       odo: Math.random() * 100000,
       tripA: Math.random() * 1000,
       tripB: Math.random() * 1000,
-      boost: Math.random() * 2,
       warnings: {
         oil: Math.random() > 0.9,
         temp: Math.random() > 0.9,
@@ -1169,14 +1162,13 @@ updateDisplay({
   speed: 40,
   fuel: 90,
   coolant: 90,
-  oil_temp: 92,
-  trans_temp: 78,
+  oil_pressure: 2.8,
+  fuel_consumption: 8.5,
   battery: 14.2,
   gear: 3,
   odo: 12345,
   tripA: 12.3,
   tripB: 45.6,
-  boost: 0.8,
   warnings: {}
 });
 

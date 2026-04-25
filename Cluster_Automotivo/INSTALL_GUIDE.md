@@ -1,5 +1,26 @@
 # ============================================
-# Raspberry Pi Imager - Cluster Automotivo
+
+## 🐍 Ambiente Virtual Python
+
+**Importante:** O Raspberry Pi OS usa um ambiente Python gerenciado externamente. Para evitar conflitos, sempre use um ambiente virtual:
+
+```bash
+# Criar ambiente virtual (apenas uma vez)
+python3 -m venv cluster_env
+
+# Ativar ambiente virtual (sempre antes de executar)
+source cluster_env/bin/activate
+
+# Agora pode usar pip normalmente
+pip3 install -r requirements.txt
+
+# Executar o cluster
+python3 cluster_gui.py
+
+# Desativar (opcional)
+deactivate
+```
+
 # ============================================
 # Este documento fornece instruções para criar
 # um cartão SD pronto com o Cluster Automotivo
@@ -95,17 +116,30 @@ mkdir -p ~/Cluster_Automotivo
 cd ~/Cluster_Automotivo
 
 # Baixar do GitHub (substitua pela sua URL)
-git clone https://github.com/marcosgt96/Cluster_Automotivo.git .
+sudo apt install -y git
+git clone https://github.com/marcosgt96/Rep_Cluster.git
+sudo apt updates
+sudo apt install python3-full
+sudo apt install python3-pip python3-setuptools python3-wheel
+apt install python3.13-venv
 
 # Ou criar manualmente os arquivos
 # Copie os arquivos do seu computador via SCP:
 # scp -r ./Cluster_Automotivo/* cluster@cluster-automotivo.local:~/Cluster_Automotivo/
 
 # Instalar dependências
+# Criar ambiente virtual para evitar conflitos com Python do sistema
+python3 -m venv cluster_env
+source cluster_env/bin/activate
 pip3 install -r requirements.txt
 
 # Testar
-python3 cluster_gui.py
+chmod +x run_cluster.sh
+./run_cluster.sh
+
+# Ou manualmente:
+# source cluster_env/bin/activate
+# python3 cluster_gui.py
 ```
 
 ---
@@ -126,6 +160,8 @@ git clone https://github.com/seu-usuario/Cluster_Automotivo.git
 
 # Instalar dependências
 cd Cluster_Automotivo
+python3 -m venv cluster_env
+source cluster_env/bin/activate
 pip3 install -r requirements.txt
 
 # Criar script de inicialização automática
@@ -134,7 +170,7 @@ cat > ~/.config/autostart/cluster.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=Cluster Automotivo
-Exec=python3 /home/pi/Cluster_Automotivo/cluster_gui.py
+Exec=bash -c "cd /home/pi/Cluster_Automotivo && source cluster_env/bin/activate && python3 cluster_gui.py"
 EOF
 ```
 
@@ -156,7 +192,24 @@ Substitua `N` pelo número do disco (verifique com `diskutil list` no macOS ou `
 
 ---
 
-## 📋 Configuração Recomendada
+## � Script de Execução
+
+Para facilitar o uso, foi criado um script `run_cluster.sh` que:
+
+- Verifica/cria o ambiente virtual automaticamente
+- Ativa o ambiente virtual
+- Executa o cluster
+- Desativa o ambiente ao finalizar
+
+```bash
+# Tornar executável (apenas uma vez)
+chmod +x run_cluster.sh
+
+# Executar
+./run_cluster.sh
+```
+**Mais detalhes:** Veja `RUN_SCRIPT_README.md`
+---
 
 ### Para Tela de 7" Touchscreen:
 
@@ -188,11 +241,19 @@ ssh pi@cluster-automotivo.local
 
 # Atualizar
 cd ~/Cluster_Automotivo
+source cluster_env/bin/activate
 git pull
 pip3 install -r requirements.txt --upgrade
 
 # Reiniciar
 sudo reboot
+```
+
+**Nota:** Sempre ative o ambiente virtual antes de executar comandos Python:
+```bash
+cd ~/Cluster_Automotivo
+source cluster_env/bin/activate
+python3 cluster_gui.py
 ```
 
 ---
@@ -204,6 +265,14 @@ Se tiver problemas:
 1. **Sem conexão SSH**: Verifique IP no roteador
 2. **Tela preta**: Pressione Alt+F2 para ver terminal
 3. **GUI não inicia**: Verifique com `python3 -c "import tkinter"`
+4. **Erro "externally-managed-environment"**: Sempre ative o ambiente virtual:
+   ```bash
+   cd ~/Cluster_Automotivo
+   source cluster_env/bin/activate
+   python3 cluster_gui.py
+   ```
+   Ou use o script: `./run_cluster.sh`
+5. **Ambiente virtual não encontrado**: Recrie com `python3 -m venv cluster_env`
 
 ---
 
@@ -212,3 +281,5 @@ Se tiver problemas:
 - **Segurança**: Altere a senha padrão após primeira inicialização
 - **Backup**: Faça imagem do cartão após configuração completa
 - **Rede**: Anote o IP do Raspberry para acesso futuro
+- **Ambiente Virtual**: Sempre ative com `source cluster_env/bin/activate` antes de usar Python/pip
+- **Script de Execução**: Use `./run_cluster.sh` para executar facilmente com ambiente virtual
