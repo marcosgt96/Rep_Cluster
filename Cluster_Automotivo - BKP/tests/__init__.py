@@ -1,1 +1,0 @@
-# Testes do Cluster Automotivo
