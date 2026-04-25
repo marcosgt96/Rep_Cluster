@@ -570,9 +570,9 @@
   </div>
 
   <!-- ─── LEFT PANEL: RPM ──────────────────────────────── -->
-  <div class="panel" style="grid-column:1; grid-row:2; animation-delay:0.1s">
+  <div class="panel" style="grid-column:1; grid-row:2; animation-delay:0.3s">
     <span class="panel-title">TACHOMETER</span>
-    <canvas id="rpmGauge" width="220" height="220"></canvas>
+    <canvas id="rpmGauge" width="330" height="330"></canvas>
     <div class="rpm-leds" id="rpm-leds">
       <!-- JS generated -->
     </div>
@@ -583,10 +583,10 @@
   </div>
 
   <!-- ─── CENTER PANEL: SPEEDOMETER ───────────────────── -->
-  <div class="panel panel-center" style="grid-row:2;">
+  <div class="panel panel-center" style="grid-row:2; animation-delay:0.2s">
     <span class="panel-title">VELOCIDADE</span>
-    <canvas id="speedGauge" width="280" height="280"></canvas>
-    <div style="position:absolute; bottom: 22%; display:flex; flex-direction:column; align-items:center;">
+    <canvas id="speedGauge" width="380" height="380"></canvas>
+    <div style="position:absolute; bottom: 15%; display:flex; flex-direction:column; align-items:center;">
       <div class="speed-value" id="speed-val">0</div>
       <div class="speed-unit">KM/H</div>
       <div class="accent-line"></div>
@@ -605,7 +605,7 @@
   </div>
 
   <!-- ─── RIGHT PANEL: GAUGES ──────────────────────────── -->
-  <div class="panel" style="grid-column:3; grid-row:2; gap:10px; animation-delay:0.15s">
+  <div class="panel" style="grid-column:3; grid-row:2; gap:10px; animation-delay:0.3s">
     <span class="panel-title">INSTRUMENTOS</span>
 
     <!-- Fuel -->
@@ -628,10 +628,10 @@
 
     <div class="accent-line"></div>
 
-    <!-- Oil Temp Engine -->
+    <!-- Water Temp Engine -->
     <div class="bar-gauge" style="width:90%;">
       <div class="bar-header">
-        <span class="bar-name">Temp. Oleo Motor</span>
+        <span class="bar-name">Temp. Agua Motor</span>
         <span><span class="bar-reading" id="oiltemp-val">92</span><span class="bar-unit">C</span></span>
       </div>
       <div class="bar-track">
@@ -648,10 +648,10 @@
 
     <div class="accent-line"></div>
 
-    <!-- Transmission Oil Temp -->
+    <!-- Engine Oil Pressure -->
     <div class="bar-gauge" style="width:90%;">
       <div class="bar-header">
-        <span class="bar-name">Temp. Oleo Trans.</span>
+        <span class="bar-name">Pressão Oleo Motor</span>
         <span><span class="bar-reading" id="transTemp-val">78</span><span class="bar-unit">C</span></span>
       </div>
       <div class="bar-track">
@@ -668,22 +668,22 @@
 
     <div class="accent-line"></div>
 
-    <!-- Boost -->
+    <!-- Average Consumption -->
     <div style="display:flex; align-items:center; justify-content:space-between; width:90%;">
       <div class="bar-gauge" style="flex:1;">
         <div class="bar-header">
-          <span class="bar-name">Turbo / Boost</span>
-          <span><span class="bar-reading" id="boost-val">0.8</span><span class="bar-unit">bar</span></span>
+          <span class="bar-name">Consumo Médio</span>
+          <span><span class="bar-reading" id="boost-val">0.8</span><span class="bar-unit">km/l</span></span>
         </div>
         <div class="bar-track">
           <div class="bar-fill" id="boost-bar" style="width:53%; background: linear-gradient(90deg, var(--accent2), var(--warn));"></div>
         </div>
         <div class="bar-ticks">
-          <span class="bar-tick">-1</span>
           <span class="bar-tick">0</span>
-          <span class="bar-tick">0.5</span>
-          <span class="bar-tick">1.0</span>
-          <span class="bar-tick">1.5</span>
+          <span class="bar-tick">5</span>
+          <span class="bar-tick">10</span>
+          <span class="bar-tick">15</span>
+          <span class="bar-tick">20</span>
         </div>
       </div>
     </div>
@@ -888,36 +888,36 @@ const rpmCtx   = rpmCanvas.getContext('2d');
 const speedCtx = speedCanvas.getContext('2d');
 const voltCtx  = voltCanvas.getContext('2d');
 
-const START_ANGLE = (PI * 0.75);
-const END_ANGLE   = (PI * 2.25);
+const START_ANGLE = (PI * 0.80);
+const END_ANGLE   = (PI * 2.21);
 
 function renderRPM(val) {
   const cx = rpmCanvas.width  / 2;
   const cy = rpmCanvas.height / 2;
-  const r  = 90;
+  const r  = 110;
 
-  drawArcGauge(rpmCtx, cx, cy, r, START_ANGLE, END_ANGLE, val, 0, 8000, {
-    arcWidth: 10,
-    fillColor: val > 6500 ? '#e8200a' : val > 5500 ? '#ffcc00' : '#e8630a',
+  drawArcGauge(rpmCtx, cx, cy, r, START_ANGLE, END_ANGLE, val, 0, 7000, {
+    arcWidth: 9,
+    fillColor: val > 5500 ? '#e8200a' : val > 3000 ? '#ffcc00' : '#1af86b',
     needleColor: '#ffffff',
-    ticks: 8,
+    ticks: 12,
     zones: [
       { from: 0,    to: 3000, color: '#0ae86b' },
-      { from: 3000, to: 6000, color: '#e8630a' },
-      { from: 6000, to: 8000, color: '#e8200a' },
+      { from: 3000, to: 5500, color: '#e8630a' },
+      { from: 5500, to: 7000, color: '#e8200a' },
     ]
   });
 
   // RPM label inside
   rpmCtx.save();
   rpmCtx.font = '600 11px Orbitron, monospace';
-  rpmCtx.fillStyle = 'rgba(200,208,224,0.3)';
+  rpmCtx.fillStyle = 'rgba(200,208,224,0.7)';
   rpmCtx.textAlign = 'center';
-  const ticks = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
   ticks.forEach((t, i) => {
     const frac = i / (ticks.length - 1);
     const a = START_ANGLE + frac * (END_ANGLE - START_ANGLE);
-    const lbl_r = r - 10 - 20;
+    const lbl_r = r - 15 - 20;
     rpmCtx.fillText(t, cx + Math.cos(a) * lbl_r, cy + Math.sin(a) * lbl_r + 4);
   });
   rpmCtx.restore();
@@ -926,29 +926,29 @@ function renderRPM(val) {
 function renderSpeed(val) {
   const cx = speedCanvas.width  / 2;
   const cy = speedCanvas.height / 2;
-  const r  = 120;
+  const r  = 150;
 
-  drawArcGauge(speedCtx, cx, cy, r, START_ANGLE, END_ANGLE, val, 0, 280, {
-    arcWidth: 13,
-    fillColor: val > 200 ? '#e8200a' : val > 120 ? '#ffcc00' : '#e8630a',
+  drawArcGauge(speedCtx, cx, cy, r, START_ANGLE, END_ANGLE, val, 0, 220, {
+    arcWidth: 11,
+    fillColor: val > 179 ? '#e8200a' : val > 119 ? '#ffcc00' : '#1af86b',
     needleColor: '#ffffff',
-    ticks: 14,
+    ticks: 20,
     zones: [
-      { from: 0,   to: 100, color: '#0ae86b' },
-      { from: 100, to: 200, color: '#e8630a' },
-      { from: 200, to: 280, color: '#e8200a' },
+      { from: 0,   to: 120, color: '#0ae86b' },
+      { from: 120, to: 180, color: '#e8630a' },
+      { from: 180, to: 220, color: '#e8200a' },
     ]
   });
 
   // Speed labels
   speedCtx.save();
-  speedCtx.font = '600 11px Orbitron, monospace';
-  speedCtx.fillStyle = 'rgba(200,208,224,0.4)';
+  speedCtx.font = '600 15px Orbitron, monospace';
+  speedCtx.fillStyle = 'rgba(200,208,224,0.7)';
   speedCtx.textAlign = 'center';
-  [0, 40, 80, 120, 160, 200, 240, 280].forEach((s, i) => {
-    const frac = s / 280;
+  [0, 0, 20, 40, 40, 60, 80, 80, 100, 120, 120, 140, 160, 160, 180, 200, 200, 220].forEach((s, i) => {
+    const frac = s / 220;
     const a = START_ANGLE + frac * (END_ANGLE - START_ANGLE);
-    const lbl_r = r - 13 - 22;
+    const lbl_r = r - 18 - 30;
     speedCtx.fillText(s, cx + Math.cos(a) * lbl_r, cy + Math.sin(a) * lbl_r + 4);
   });
   speedCtx.restore();
@@ -994,15 +994,15 @@ for (let i = 0; i < LED_COUNT; i++) {
 }
 
 function updateRPMLeds(rpm) {
-  const max = 8000;
+  const max = 7000;
   const frac = rpm / max;
   const lit = Math.round(frac * LED_COUNT);
   for (let i = 0; i < LED_COUNT; i++) {
     const el = document.getElementById(`rled-${i}`);
     el.className = 'rpm-led';
     if (i < lit) {
-      if (rpm > 6500) el.classList.add('on-red');
-      else if (rpm > 5500) el.classList.add('on-yellow');
+      if (rpm > 5100) el.classList.add('on-red');
+      else if (rpm > 3500) el.classList.add('on-yellow');
       else el.classList.add('on-green');
     }
   }
@@ -1026,8 +1026,8 @@ function updateDisplay(data) {
   document.getElementById('fuel-bar').style.width = data.fuel + '%';
 
   // Oil temp
-  document.getElementById('oiltemp-val').textContent = Math.round(data.oil_temp);
-  const oilPerc = ((data.oil_temp - 40) / (170 - 40)) * 100;
+  document.getElementById('oiltemp-val').textContent = data.coolant;
+  const oilPerc = ((data.coolant - 40) / (170 - 40)) * 100;
   document.getElementById('oiltemp-bar').style.width = Math.max(0, Math.min(100, oilPerc)) + '%';
 
   // Trans temp
@@ -1142,9 +1142,9 @@ try {
 
 // Initial render
 updateDisplay({
-  rpm: 0,
-  speed: 0,
-  fuel: 75,
+  rpm: 800,
+  speed: 40,
+  fuel: 90,
   coolant: 90,
   oil_temp: 92,
   trans_temp: 78,
