@@ -143,4 +143,3 @@ if __name__ == "__main__":
     # Inicia cluster web
     cluster = ClusterWebApp(use_hardware=False)
     cluster.run()
-            # 0 na direita (0°), 8 no topo (270°), passando por baixo (180°)

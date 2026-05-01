@@ -170,7 +170,7 @@ cat > ~/.config/autostart/cluster.desktop << 'EOF'
 [Desktop Entry]
 Type=Application
 Name=Cluster Automotivo
-Exec=bash -c "cd /home/pi/Cluster_Automotivo && source cluster_env/bin/activate && python3 cluster_gui.py"
+Exec=bash -c "cd /Rep_Cluster/Cluster_Automotivo && source cluster_env/bin/activate && python3 cluster_gui.py"
 EOF
 ```
 
