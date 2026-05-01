@@ -1,0 +1,26 @@
+[Unit]
+Description=Cluster Automotivo - Painel de Instrumentos Web
+Documentation=https://github.com/seu-usuario/Rep_Cluster
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/Rep_Cluster/Cluster_Automotivo
+Environment="PATH=/root/Rep_Cluster/Cluster_Automotivo/cluster_env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/root/Rep_Cluster/Cluster_Automotivo/run_cluster.sh
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=cluster-automotivo
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/root/Rep_Cluster/Cluster_Automotivo/logs
+
+[Install]
+WantedBy=multi-user.target

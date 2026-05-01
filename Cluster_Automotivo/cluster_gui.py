@@ -132,10 +132,15 @@ class ClusterWebApp:
         update_thread = threading.Thread(target=self._update_display, daemon=True)
         update_thread.start()
         
-        # Abrir navegador
-        webbrowser.open('http://localhost:5000')
+        # Tentar abrir navegador (falha silenciosa em ambientes headless)
+        try:
+            webbrowser.open('http://localhost:5000')
+        except Exception as e:
+            print(f"Não foi possível abrir o navegador: {e}")
+            print("Acesse a aplicação em: http://localhost:5000")
         
         # Iniciar servidor
+        print("Servidor Cluster iniciado em http://0.0.0.0:5000")
         self.socketio.run(self.app, host='0.0.0.0', port=5000, debug=False)
 
 
