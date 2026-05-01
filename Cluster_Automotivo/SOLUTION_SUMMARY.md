@@ -65,6 +65,13 @@
 - Soluções passo a passo
 - Script de diagnóstico integrado
 
+#### `INSTALL_GUIDE.md`
+- Guia completo de instalação
+- Instalação rápida (3 passos)
+- Criação de imagem do zero
+- Atualizações via Git
+- Configurações de tela
+
 #### `diagnose.sh`
 - Script de diagnóstico automático
 - Verificação completa do sistema

@@ -1,43 +1,237 @@
-# ============================================
+# 🚀 Cluster Automotivo - Guia Completo de Instalação
+
+## ✅ O Que Este Guia Resolve
+
+Você terá uma aplicação que:
+- ✅ **Inicia automaticamente** no boot do Raspberry Pi
+- ✅ **Funciona remotamente** de qualquer aparelho na rede
+- ✅ **Tem logs completos** para debug e monitoramento
+- ✅ **Reinicia sozinha** em caso de falha
+- ✅ **Funciona headless** (sem monitor/teclado conectado)
+
+---
+
+## 🎯 Opções de Instalação
+
+### Opção 1: Instalação Rápida (Recomendada)
+→ Para Raspberry Pi já configurado com DietPi
+→ Usa inicialização automática via systemd
+
+### Opção 2: Criar Imagem do Zero
+→ Para cartão SD novo com tudo pronto
+→ Inclui configuração completa do sistema
+
+---
+
+## 🚀 Instalação Rápida (DietPi Existente)
+
+### Pré-requisitos
+- Raspberry Pi com DietPi instalado
+- Acesso SSH ao Raspberry Pi
+- Conexão com internet
+
+### 3 Passos para Instalar
+
+#### 1️⃣ Preparar Scripts
+```bash
+cd ~/Rep_Cluster/Cluster_Automotivo
+chmod +x *.sh
+```
+
+#### 2️⃣ Instalar Serviço Automático
+```bash
+sudo bash setup_autostart.sh
+```
+
+#### 3️⃣ Iniciar Aplicação
+```bash
+sudo systemctl start cluster-automotivo
+```
+
+**✅ Pronto! A aplicação está rodando automaticamente.**
+
+---
+
+## 🌐 Como Acessar a Aplicação
+
+### Localmente (no Raspberry Pi)
+```
+http://localhost:5000
+```
+
+### De outro aparelho na rede
+```
+http://<IP_DO_RASPBERRY>:5000
+```
+
+**Descubra o IP do Raspberry:**
+```bash
+hostname -I
+```
+
+---
+
+## 📚 Documentação Criada
+
+Para suporte completo, criamos 6 documentos:
+
+1. **`CHECKLIST.md`** ← **COMECE AQUI!**
+   - Verificação passo a passo
+   - Testes de funcionamento
+
+2. **`DIETPI_QUICK_START.md`**
+   - Início rápido em 3 passos
+   - Comandos principais
+
+3. **`AUTOSTART_GUIDE.md`**
+   - Guia completo e detalhado
+   - Segurança e configurações
+
+4. **`DIETPI_TROUBLESHOOTING.md`**
+   - +20 problemas e soluções
+   - Muito útil se algo não funcionar
+
+5. **`SOLUTION_SUMMARY.md`**
+   - Resumo de tudo que foi feito
+   - Estrutura de arquivos
+   - Fluxograma de inicialização
+
+6. **`diagnose.sh`**
+   - Script para diagnosticar problemas
+   - Execute: `bash diagnose.sh`
+
+---
+
+## 🎮 Comandos Essenciais
+
+```bash
+# Status da aplicação
+sudo systemctl status cluster-automotivo
+
+# Ver logs em tempo real
+sudo journalctl -u cluster-automotivo -f
+
+# Reiniciar aplicação
+sudo systemctl restart cluster-automotivo
+
+# Parar aplicação
+sudo systemctl stop cluster-automotivo
+
+# Diagnosticar problemas
+bash ~/Rep_Cluster/Cluster_Automotivo/diagnose.sh
+
+# Executar manualmente (para testes)
+cd ~/Rep_Cluster/Cluster_Automotivo && ./run_cluster.sh
+```
+
+---
+
+## 📁 Arquivos Criados/Modificados
+
+### ✅ Arquivos MODIFICADOS
+- `run_cluster.sh` - Logging completo + tratamento de erros
+- `cluster_gui.py` - Funciona em ambientes headless
+
+### ✨ Novos SCRIPTS
+- `setup_autostart.sh` - Instalador automático do serviço
+- `cluster-automotivo.service` - Configuração systemd
+- `open_cluster.sh` - Abre cluster no navegador
+- `diagnose.sh` - Diagnóstico automático
+
+### ✨ Nova DOCUMENTAÇÃO
+- `CHECKLIST.md` - Verificação passo a passo
+- `DIETPI_QUICK_START.md` - Início rápido
+- `AUTOSTART_GUIDE.md` - Guia detalhado
+- `DIETPI_TROUBLESHOOTING.md` - Solução de problemas
+- `SOLUTION_SUMMARY.md` - Resumo técnico
+
+---
 
 ## 🐍 Ambiente Virtual Python
 
-**Importante:** O Raspberry Pi OS usa um ambiente Python gerenciado externamente. Para evitar conflitos, sempre use um ambiente virtual:
+**Importante:** Sempre use ambiente virtual para evitar conflitos:
 
 ```bash
-# Criar ambiente virtual (apenas uma vez)
+# Criar ambiente virtual (feito automaticamente pelo script)
 python3 -m venv cluster_env
 
-# Ativar ambiente virtual (sempre antes de executar)
+# Ativar ambiente virtual (sempre antes de usar Python/pip)
 source cluster_env/bin/activate
 
 # Agora pode usar pip normalmente
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
-# Executar o cluster
+# Executar aplicação
 python3 cluster_gui.py
 
 # Desativar (opcional)
 deactivate
 ```
 
-# ============================================
-# Este documento fornece instruções para criar
-# um cartão SD pronto com o Cluster Automotivo
-# ============================================
-
-## 🎯 Opções de Instalação
-
-### Opção 1: Instalação em Raspberry Pi existente
-→ Use o script `install.sh` no Raspberry Pi
-
-### Opção 2: Criar imagem ready-to-use (este guia)
-→ Cria um cartão SD com tudo pronto
+**Nota:** O script `run_cluster.sh` gerencia isso automaticamente!
 
 ---
 
-## 📦 Materiais Necessários
+## 🔄 Atualizações Futuras (Via Git)
 
+Com as mudanças para inicialização automática, as atualizações são mais simples:
+
+### 1. Acessar Raspberry Pi
+```bash
+ssh root@<IP_DO_RASPBERRY>
+# ou
+ssh pi@<IP_DO_RASPBERRY>
+```
+
+### 2. Parar o Serviço
+```bash
+sudo systemctl stop cluster-automotivo
+```
+
+### 3. Atualizar Código
+```bash
+cd ~/Rep_Cluster/Cluster_Automotivo
+git pull
+```
+
+### 4. Verificar se há mudanças nos scripts (opcional)
+```bash
+# Se houve mudanças em setup_autostart.sh ou cluster-automotivo.service:
+chmod +x *.sh
+sudo bash setup_autostart.sh  # Reinstala o serviço se necessário
+```
+
+### 5. Atualizar Dependências (geralmente automático)
+```bash
+# O script run_cluster.sh instala dependências automaticamente na primeira execução
+# Só é necessário atualizar manualmente se houver mudanças específicas:
+source cluster_env/bin/activate
+pip install -r requirements.txt --upgrade
+deactivate
+```
+
+### 6. Reiniciar Serviço
+```bash
+sudo systemctl start cluster-automotivo
+sudo systemctl status cluster-automotivo
+```
+
+### 7. Verificar Logs
+```bash
+sudo journalctl -u cluster-automotivo -f
+```
+
+**✅ Atualização concluída!**
+
+**Nota:** Na maioria dos casos, apenas os passos 1, 2, 3, 6 e 7 são necessários.
+
+---
+
+## 📦 Opção 2: Criar Imagem do Zero
+
+Para criar um cartão SD completamente novo com tudo pronto:
+
+### Materiais Necessários
 | Item | Descrição |
 |------|------------|
 | Computador | Windows, macOS ou Linux |
@@ -46,173 +240,84 @@ deactivate
 | Raspberry Pi | 3B+ ou superior |
 | Raspberry Pi Imager | [Baixar](https://www.raspberrypi.com/software/) |
 
----
+### Passo a Passo
 
-## 🔧 Criando a Imagem - Passo a Passo
-
-### Passo 1: Baixar Raspberry Pi Imager
-
+#### 1. Baixar Raspberry Pi Imager
 **Windows/macOS/Linux:**
 - Acesse: https://www.raspberrypi.com/software/
 - Baixe e instale a versão para seu sistema
 
-### Passo 2: Preparar o Cartão SD
-
+#### 2. Preparar Cartão SD
 1. Conecte o cartão SD ao computador
 2. Abra o Raspberry Pi Imager
 3. Selecione:
-   - **Operating System**: Raspberry Pi OS (32-bit) ou (64-bit)
+   - **Operating System**: DietPi (recomendado) ou Raspberry Pi OS
    - **Storage**: Seu cartão SD
 
-### Passo 3: Configurações Avançadas (⚙️)
-
+#### 3. Configurações Avançadas (⚙️)
 Clique em ⚙️ (engrenagem) e configure:
 
 | Configuração | Valor |
 |--------------|-------|
 | **Hostname** | `cluster-automotivo` |
 | **Enable SSH** | ✅ Ativado |
-| **Username** | `cluster` |
-| **Password** | `cluster` (ou sua preferência) |
+| **Username** | `root` (para DietPi) ou `pi` |
+| **Password** | `dietpi` ou `raspberry` |
 | **WiFi** | Sua rede WiFi |
 | **Set locale settings** | ✅ Brasil |
 
-### Passo 4: Gravar a Imagem
-
+#### 4. Gravar Imagem
 1. Clique em **Write**
 2. Aguarde a conclusão (5-10 minutos)
 3. Remova o cartão com segurança
 
-### Passo 5: Primeira Inicialização
-
+#### 5. Primeira Inicialização
 1. Insira o cartão no Raspberry Pi
-2. Conecte a tela (HDMI)
-3. Conecte a fonte de alimentação
-4. Aguarde 1-2 minutos para inicializar
+2. Conecte a fonte de alimentação
+3. Aguarde 2-3 minutos para inicializar
 
-### Passo 6: Acessar via SSH
-
-**No computador, abra o terminal:**
-
+#### 6. Acessar via SSH
 ```bash
 # Windows (PowerShell)
-ssh cluster@cluster-automotivo.local
+ssh root@cluster-automotivo.local
 # ou
-ssh cluster@192.168.1.100  # Verifique o IP no roteador
+ssh root@192.168.1.100
 
 # macOS/Linux
-ssh pi@cluster-automotivo.local
+ssh root@cluster-automotivo.local
 ```
 
-**Senha:** `cluster` (ou a que você configurou)
-
-### Passo 7: Baixar e Instalar o Cluster
-
-```bash
-# No Raspberry Pi (via SSH):
-
-# Criar diretório
-mkdir -p ~/Cluster_Automotivo
-cd ~/Cluster_Automotivo
-
-# Baixar do GitHub (substitua pela sua URL)
-sudo apt install -y git
-git clone https://github.com/marcosgt96/Rep_Cluster.git
-sudo apt updates
-sudo apt install python3-full
-sudo apt install python3-pip python3-setuptools python3-wheel
-apt install python3.13-venv
-
-# Ou criar manualmente os arquivos
-# Copie os arquivos do seu computador via SCP:
-# scp -r ./Cluster_Automotivo/* cluster@cluster-automotivo.local:~/Cluster_Automotivo/
-
-# Instalar dependências
-# Criar ambiente virtual para evitar conflitos com Python do sistema
-python3 -m venv cluster_env
-source cluster_env/bin/activate
-pip3 install -r requirements.txt
-
-# Testar
-chmod +x run_cluster.sh
-./run_cluster.sh
-
-# Ou manualmente:
-# source cluster_env/bin/activate
-# python3 cluster_gui.py
-```
-
----
-
-## 🎯 Criar Imagem Pré-Instalada (Avançado)
-
-Para criar uma imagem já com o cluster instalado:
-
-### No Raspberry Pi (após Passo 7):
-
+#### 7. Instalar Cluster Automotivo
 ```bash
 # No Raspberry Pi:
-sudo apt install -y git
 
-# Clonar ou copiar projeto
-cd ~
-git clone https://github.com/seu-usuario/Cluster_Automotivo.git
+# Atualizar sistema
+sudo apt update && sudo apt upgrade -y
 
 # Instalar dependências
-cd Cluster_Automotivo
-python3 -m venv cluster_env
-source cluster_env/bin/activate
-pip3 install -r requirements.txt
+sudo apt install -y git python3 python3-pip python3-venv
 
-# Criar script de inicialização automática
-mkdir -p ~/.config/autostart
-cat > ~/.config/autostart/cluster.desktop << 'EOF'
-[Desktop Entry]
-Type=Application
-Name=Cluster Automotivo
-Exec=bash -c "cd /Rep_Cluster/Cluster_Automotivo && source cluster_env/bin/activate && python3 cluster_gui.py"
-EOF
+# Baixar projeto
+cd ~
+git clone https://github.com/seu-usuario/Rep_Cluster.git
+cd Rep_Cluster/Cluster_Automotivo
+
+# Instalar aplicação
+chmod +x *.sh
+sudo bash setup_autostart.sh
+sudo systemctl start cluster-automotivo
+
+# Verificar
+sudo systemctl status cluster-automotivo
 ```
 
-### Criar Backup da Imagem:
-
-```bash
-# No computador com cartão inserido:
-# Windows (PowerShell como Admin):
-win32diskimager.exe
-
-# macOS:
-sudo dd if=/dev/rdiskN of=cluster-automotivo.img bs=1M
-
-# Linux:
-sudo dd if=/dev/mmcblk0 of=cluster-automotivo.img bs=1M
-```
-
-Substitua `N` pelo número do disco (verifique com `diskutil list` no macOS ou `lsblk` no Linux)
+**✅ Imagem pronta!**
 
 ---
 
-## � Script de Execução
+## 🖥️ Configurações de Tela (Opcional)
 
-Para facilitar o uso, foi criado um script `run_cluster.sh` que:
-
-- Verifica/cria o ambiente virtual automaticamente
-- Ativa o ambiente virtual
-- Executa o cluster
-- Desativa o ambiente ao finalizar
-
-```bash
-# Tornar executável (apenas uma vez)
-chmod +x run_cluster.sh
-
-# Executar
-./run_cluster.sh
-```
-**Mais detalhes:** Veja `RUN_SCRIPT_README.md`
----
-
-### Para Tela de 7" Touchscreen:
-
+### Para Tela Touchscreen 7"
 ```bash
 # No Raspberry Pi:
 sudo raspi-config
@@ -222,8 +327,7 @@ Navegue até:
 - **Display Options** → **Resolution** → `800x480`
 - **Display Options** → **Screen Blanking** → `No`
 
-### Para Tela HDMI (TV/Vídeo):
-
+### Para Tela HDMI (TV/Monitor)
 ```bash
 # Forçar resolução HDMI
 echo "hdmi_force_hotplug=1" | sudo tee -a /boot/config.txt
@@ -233,53 +337,89 @@ echo "hdmi_mode=82" | sudo tee -a /boot/config.txt  # 1920x1080 60Hz
 
 ---
 
-## 🔄 Atualizações Futuras
+## 📞 Suporte e Troubleshooting
 
-```bash
-# Acessar Raspberry
-ssh pi@cluster-automotivo.local
+### Problemas Comuns
 
-# Atualizar
-cd ~/Cluster_Automotivo
-source cluster_env/bin/activate
-git pull
-pip3 install -r requirements.txt --upgrade
-
-# Reiniciar
-sudo reboot
-```
-
-**Nota:** Sempre ative o ambiente virtual antes de executar comandos Python:
-```bash
-cd ~/Cluster_Automotivo
-source cluster_env/bin/activate
-python3 cluster_gui.py
-```
-
----
-
-## 📞 Suporte
-
-Se tiver problemas:
-
-1. **Sem conexão SSH**: Verifique IP no roteador
-2. **Tela preta**: Pressione Alt+F2 para ver terminal
-3. **GUI não inicia**: Verifique com `python3 -c "import tkinter"`
-4. **Erro "externally-managed-environment"**: Sempre ative o ambiente virtual:
+1. **Serviço não inicia:**
    ```bash
-   cd ~/Cluster_Automotivo
-   source cluster_env/bin/activate
-   python3 cluster_gui.py
+   sudo journalctl -u cluster-automotivo -n 50
    ```
-   Ou use o script: `./run_cluster.sh`
-5. **Ambiente virtual não encontrado**: Recrie com `python3 -m venv cluster_env`
+
+2. **Porta 5000 ocupada:**
+   ```bash
+   sudo systemctl restart cluster-automotivo
+   ```
+
+3. **Não acessa remotamente:**
+   ```bash
+   hostname -I  # Verificar IP
+   curl http://localhost:5000  # Testar localmente
+   ```
+
+4. **Ambiente virtual com problemas:**
+   ```bash
+   rm -rf ~/Rep_Cluster/Cluster_Automotivo/cluster_env
+   ./run_cluster.sh  # Recria automaticamente
+   ```
+
+### Script de Diagnóstico
+```bash
+bash ~/Rep_Cluster/Cluster_Automotivo/diagnose.sh
+```
+
+### Documentação de Suporte
+- **`DIETPI_TROUBLESHOOTING.md`** - +20 soluções de problemas
+- **`AUTOSTART_GUIDE.md`** - Guia técnico detalhado
 
 ---
 
-## 📝 Notas
+## 📝 Notas Importantes
 
-- **Segurança**: Altere a senha padrão após primeira inicialização
-- **Backup**: Faça imagem do cartão após configuração completa
+- **Segurança**: Altere a senha padrão após primeira configuração
+- **Backup**: Faça backup da imagem do cartão SD após configurar tudo
 - **Rede**: Anote o IP do Raspberry para acesso futuro
-- **Ambiente Virtual**: Sempre ative com `source cluster_env/bin/activate` antes de usar Python/pip
-- **Script de Execução**: Use `./run_cluster.sh` para executar facilmente com ambiente virtual
+- **Ambiente Virtual**: O script gerencia automaticamente
+- **Atualizações**: Use `git pull` + reinicie o serviço
+- **Logs**: Sempre verifique logs em caso de problemas
+
+---
+
+## 🎯 Verificação Final
+
+Após instalação, verifique se tudo funciona:
+
+```bash
+# 1. Serviço ativo
+sudo systemctl status cluster-automotivo
+
+# 2. Porta aberta
+sudo netstat -tuln | grep 5000
+
+# 3. Acesso local
+curl http://localhost:5000
+
+# 4. Descobrir IP
+hostname -I
+
+# 5. Testar acesso remoto (de outro aparelho)
+# Abra navegador: http://<IP>:5000
+```
+
+**✅ Tudo funcionando? Parabéns! 🚗**
+
+---
+
+## 📖 Leitura Recomendada
+
+- **Rápido (2 min):** Este arquivo
+- **Passo a passo (5 min):** `CHECKLIST.md`
+- **Detalhado (15 min):** `AUTOSTART_GUIDE.md`
+- **Problemas:** `DIETPI_TROUBLESHOOTING.md`
+
+---
+
+**Última atualização:** 2025-01-05
+**Sistema:** DietPi/Raspberry Pi OS
+**Versão:** v1.0 com inicialização automática
+**Compatível:** Raspberry Pi 3B+ ou superior
