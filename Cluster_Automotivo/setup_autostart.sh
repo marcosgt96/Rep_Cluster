@@ -14,7 +14,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Definir variáveis
-APP_DIR="/root/Rep_Cluster/Cluster_Automotivo"
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SERVICE_FILE="/etc/systemd/system/cluster-automotivo.service"
 SERVICE_TEMPLATE="$APP_DIR/cluster-automotivo.service"
 
@@ -47,12 +47,12 @@ if [ ! -f "$SERVICE_TEMPLATE" ]; then
     exit 1
 fi
 
-# Copiar o arquivo de serviço
+# Gerar arquivo de serviço systemd com caminho dinâmico
 echo "Instalando serviço systemd..."
-cp "$SERVICE_TEMPLATE" "$SERVICE_FILE"
+sed "s|{{APP_DIR}}|$APP_DIR|g" "$SERVICE_TEMPLATE" > "$SERVICE_FILE"
 
 if [ ! -f "$SERVICE_FILE" ]; then
-    echo "ERRO: Falha ao copiar arquivo de serviço"
+    echo "ERRO: Falha ao criar arquivo de serviço"
     exit 1
 fi
 

@@ -204,13 +204,16 @@ http://localhost:5000
 
 ### Restringir acesso localmente
 
-Edite `cluster-automotivo.service`:
-```ini
-# Mude:
-ExecStart=/root/Rep_Cluster/Cluster_Automotivo/run_cluster.sh
+O serviço criado pelo `setup_autostart.sh` já usa o caminho de instalação atual da aplicação. Se quiser limitar o acesso apenas ao localhost, edite o arquivo de serviço gerado em `/etc/systemd/system/cluster-automotivo.service` e altere `ExecStart` para:
 
-# Para:
-ExecStart=/bin/bash -c 'cd /root/Rep_Cluster/Cluster_Automotivo && python3 -c "app = __import__(\"cluster_gui\").ClusterWebApp(); app.socketio.run(app.app, host=\"127.0.0.1\", port=5000)"'
+```ini
+ExecStart=/bin/bash -lc 'cd /caminho/para/Cluster_Automotivo && ./run_cluster.sh'
+```
+
+ou para uma execução local:
+
+```ini
+ExecStart=/bin/bash -lc 'cd /caminho/para/Cluster_Automotivo && python3 -c "app = __import__(\"cluster_gui\").ClusterWebApp(); app.socketio.run(app.app, host=\"127.0.0.1\", port=5000)"'
 ```
 
 (Isso limitaria ao localhost, sem acesso remoto)
