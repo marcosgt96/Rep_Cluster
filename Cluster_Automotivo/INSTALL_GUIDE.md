@@ -73,7 +73,7 @@ hostname -I
 
 ## 📚 Documentação Criada
 
-Para suporte completo, criamos 6 documentos:
+Para suporte completo, criamos 7 documentos:
 
 1. **`CHECKLIST.md`** ← **COMECE AQUI!**
    - Verificação passo a passo
@@ -96,7 +96,12 @@ Para suporte completo, criamos 6 documentos:
    - Estrutura de arquivos
    - Fluxograma de inicialização
 
-6. **`diagnose.sh`**
+6. **`GIT_SYNC_GUIDE.md`** ← **Para atualizações com Git**
+   - Como resolver conflitos ao fazer `git pull`
+   - Boas práticas de sincronização
+   - 3 soluções diferentes
+
+7. **`diagnose.sh`**
    - Script para diagnosticar problemas
    - Execute: `bash diagnose.sh`
 
@@ -176,54 +181,83 @@ deactivate
 
 Com as mudanças para inicialização automática, as atualizações são mais simples:
 
-### 1. Acessar Raspberry Pi
+### ⚠️ Importante: Antes de Fazer `git pull`
+
+**Sempre parar o serviço primeiro:**
+```bash
+sudo systemctl stop cluster-automotivo
+```
+
+### Passo a Passo
+
+#### 1. Acessar Raspberry Pi
 ```bash
 ssh root@<IP_DO_RASPBERRY>
 # ou
 ssh pi@<IP_DO_RASPBERRY>
 ```
 
-### 2. Parar o Serviço
+#### 2. Parar o Serviço
 ```bash
 sudo systemctl stop cluster-automotivo
 ```
 
-### 3. Atualizar Código
+#### 3. Ir para o Diretório
 ```bash
 cd ~/Rep_Cluster/Cluster_Automotivo
+```
+
+#### 4. Atualizar Código (Sem Mudanças Locais)
+```bash
 git pull
 ```
 
-### 4. Verificar se há mudanças nos scripts (opcional)
+**⚠️ Se receber erro sobre mudanças locais:**
+
+Consulte o arquivo **`GIT_SYNC_GUIDE.md`** para resolver conflitos de sincronização.
+
+Resumo das opções rápidas:
+```bash
+# Opção A: Guardar mudanças locais (recomendado)
+git stash
+git pull
+git stash pop
+
+# Opção B: Descartar mudanças locais
+git checkout -- .
+git pull
+```
+
+#### 5. Verificar se há Mudanças nos Scripts
 ```bash
 # Se houve mudanças em setup_autostart.sh ou cluster-automotivo.service:
 chmod +x *.sh
 sudo bash setup_autostart.sh  # Reinstala o serviço se necessário
 ```
 
-### 5. Atualizar Dependências (geralmente automático)
+#### 6. Atualizar Dependências (Geralmente Automático)
 ```bash
-# O script run_cluster.sh instala dependências automaticamente na primeira execução
-# Só é necessário atualizar manualmente se houver mudanças específicas:
+# O script run_cluster.sh instala dependências automaticamente
+# Só é necessário atualizar manualmente se mudanças específicas:
 source cluster_env/bin/activate
 pip install -r requirements.txt --upgrade
 deactivate
 ```
 
-### 6. Reiniciar Serviço
+#### 7. Reiniciar Serviço
 ```bash
 sudo systemctl start cluster-automotivo
 sudo systemctl status cluster-automotivo
 ```
 
-### 7. Verificar Logs
+#### 8. Verificar Logs
 ```bash
 sudo journalctl -u cluster-automotivo -f
 ```
 
 **✅ Atualização concluída!**
 
-**Nota:** Na maioria dos casos, apenas os passos 1, 2, 3, 6 e 7 são necessários.
+**Nota:** Na maioria dos casos, apenas os passos 1, 2, 3, 4, 7 e 8 são necessários.
 
 ---
 
