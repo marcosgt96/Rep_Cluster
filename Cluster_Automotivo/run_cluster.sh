@@ -81,3 +81,8 @@ fi
 log_msg "========== Fim da execução =========="
 
 exit $EXIT_CODE
+
+# Instruções:
+# 1. Salve este script como run_cluster.sh no diretório do Cluster Automotivo.
+# 2. Dê permissão de execução: chmod +x run_cluster.sh
+# 3. Execute o script: ./run_cluster.sh
