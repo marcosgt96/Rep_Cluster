@@ -605,7 +605,7 @@
   <div class="panel panel-center" style="grid-row:2; animation-delay:0.2s">
     <span class="panel-title">VELOCÍMETRO</span>
     <canvas id="speedGauge" width="315" height="315"></canvas>
-    <div style="position:absolute; bottom: 15%; display:flex; flex-direction:column; align-items:center;">
+    <div style="position:absolute; bottom: 10%; display:flex; flex-direction:column; align-items:center;">
       <div class="speed-value" id="speed-val">0</div>
       <div class="speed-unit">KM/H</div>
       <div class="accent-line"></div>
@@ -1040,8 +1040,8 @@ function updateDisplay(data) {
 
   // coolant temp (Water Temperature)
   document.getElementById('oiltemp-val').textContent = data.coolant;
-  const oilPerc = ((data.coolant - 40) / (125 - 40)) * 100;
-  document.getElementById('oiltemp-bar').style.width = Math.max(0, Math.min(100, oilPerc)) + '%';
+  const coolantPerc = ((data.coolant - 40) / (125 - 40)) * 100;
+  document.getElementById('oiltemp-bar').style.width = Math.max(0, Math.min(100, coolantPerc)) + '%';
 
   // Oil pressure
   document.getElementById('oilpressure-val').textContent = (data.oil_pressure || 2.8).toFixed(1);
