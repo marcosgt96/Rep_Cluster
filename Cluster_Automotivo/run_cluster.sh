@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Script para executar o Cluster Automotivo com ambiente virtual
 # Otimizado para DietPi e Raspberry Pi
 
@@ -14,6 +15,17 @@ mkdir -p "$LOG_DIR"
 log_msg() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
 }
+
+# Função para saída em caso de erro
+abort() {
+    local code=${1:-1}
+    local msg=${2:-"Erro inesperado. Veja o log em $LOG_FILE"}
+    log_msg "ERRO: $msg"
+    log_msg "========== Fim da execução =========="
+    exit "$code"
+}
+
+trap 'abort $? "Execução interrompida."' ERR
 
 log_msg "========== Iniciando Cluster Automotivo =========="
 log_msg "Diretório: $SCRIPT_DIR"
@@ -51,26 +63,24 @@ fi
 # Instalar dependências se necessário
 if [ ! -f "cluster_env/.dependencies_installed" ]; then
     log_msg "Instalando dependências..."
-    pip install --upgrade pip >> "$LOG_FILE" 2>&1
-    pip install -r requirements.txt >> "$LOG_FILE" 2>&1
-    if [ $? -eq 0 ]; then
-        touch "cluster_env/.dependencies_installed"
-        log_msg "Dependências instaladas com sucesso"
-    else
-        log_msg "AVISO: Falha ao instalar algumas dependências"
-    fi
+    python3 -m pip install --upgrade pip >> "$LOG_FILE" 2>&1
+    python3 -m pip install -r requirements.txt >> "$LOG_FILE" 2>&1
+    touch "cluster_env/.dependencies_installed"
+    log_msg "Dependências instaladas com sucesso"
 fi
 
 # Executar o cluster
 log_msg "Iniciando Cluster Automotivo..."
 log_msg "Acesse em: http://$(hostname -I | awk '{print $1}'):5000"
-python3 cluster_gui.py >> "$LOG_FILE" 2>&1
+python3 -u cluster_gui.py >> "$LOG_FILE" 2>&1
 
 # Capturar código de saída
 EXIT_CODE=$?
 
 # Desativar ambiente virtual
-deactivate
+if [ -n "${VIRTUAL_ENV:-}" ]; then
+    deactivate
+fi
 
 if [ $EXIT_CODE -ne 0 ]; then
     log_msg "ERRO: Cluster encerrou com erro (código: $EXIT_CODE)"

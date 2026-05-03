@@ -9,7 +9,7 @@ Type=simple
 User=root
 WorkingDirectory=%h/Rep_Cluster/Cluster_Automotivo
 Environment="PATH=%h/Rep_Cluster/Cluster_Automotivo/cluster_env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ExecStart=/usr/bin/env bash -lc 'cd %h/Rep_Cluster/Cluster_Automotivo && ./run_cluster.sh'
+ExecStart=/usr/bin/env bash -lc 'cd %h/Rep_Cluster/Cluster_Automotivo && exec ./run_cluster.sh'
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
