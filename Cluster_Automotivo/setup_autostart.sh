@@ -47,12 +47,12 @@ if [ ! -f "$SERVICE_TEMPLATE" ]; then
     exit 1
 fi
 
-# Gerar arquivo de serviço systemd com caminho dinâmico
+# Copiar o arquivo de serviço
 echo "Instalando serviço systemd..."
-sed "s|{{APP_DIR}}|$APP_DIR|g" "$SERVICE_TEMPLATE" > "$SERVICE_FILE"
+cp "$SERVICE_TEMPLATE" "$SERVICE_FILE"
 
 if [ ! -f "$SERVICE_FILE" ]; then
-    echo "ERRO: Falha ao criar arquivo de serviço"
+    echo "ERRO: Falha ao copiar arquivo de serviço"
     exit 1
 fi
 

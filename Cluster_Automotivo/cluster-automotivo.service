@@ -7,9 +7,9 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory={{APP_DIR}}
-Environment="PATH={{APP_DIR}}/cluster_env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ExecStart=/bin/bash -lc 'cd {{APP_DIR}} && ./run_cluster.sh'
+WorkingDirectory=%h/Rep_Cluster/Cluster_Automotivo
+Environment="PATH=%h/Rep_Cluster/Cluster_Automotivo/cluster_env/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/bin/env bash -lc 'cd %h/Rep_Cluster/Cluster_Automotivo && ./run_cluster.sh'
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -19,8 +19,7 @@ SyslogIdentifier=cluster-automotivo
 # Security hardening
 NoNewPrivileges=true
 ProtectSystem=strict
-ProtectHome=yes
-ReadWritePaths={{APP_DIR}}/logs
+ReadWritePaths=%h/Rep_Cluster/Cluster_Automotivo/logs
 
 [Install]
 WantedBy=multi-user.target
